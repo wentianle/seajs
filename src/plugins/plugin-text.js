@@ -16,8 +16,8 @@
 
     ext: [".tpl", ".html"],
 
-    exec: function(content) {
-      globalEval('define("' + jsEscape(content) + '")')
+    exec: function(uri, content) {
+      globalEval('define("' + uri + '#", [], "' + jsEscape(content) + '")')
     }
   })
 
@@ -27,13 +27,15 @@
 
     ext: [".json"],
 
-    exec: function(content) {
-      globalEval("define(" + content + ")")
+    exec: function(uri, content) {
+      globalEval('define("' + uri + '#", [], ' + content + ')')
     }
   })
 
   seajs.on("resolve", function(data) {
     var id = data.id
+    if (!id) return ""
+
     var pluginName
     var m
 
@@ -53,7 +55,7 @@
     }
 
     if (pluginName) {
-      uri = uri.replace(/\.js/, "")
+      uri = uri.replace(/\.js(?=$|\?)/, "")
       uriCache[uri] = pluginName
     }
 
@@ -65,7 +67,7 @@
 
     if (name) {
       xhr(data.requestUri, function(content) {
-        plugins[name].exec(content)
+        plugins[name].exec(data.uri, content)
         data.callback()
       })
 

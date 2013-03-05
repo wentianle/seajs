@@ -1,24 +1,20 @@
 
 seajs.config({
-
   base: './plugin-shim/',
 
   plugins: ['shim'],
 
   shim: {
     'jquery': {
+      src: 'lib/jquery.js',
       exports: 'jQuery'
     },
 
-    'jquery-plugins': {
-      match: /jquery\.[a-z].*\.js/,
-      deps: ['jquery'],
-      exports: function() {
-        return jQuery
-      }
+    'jquery.easing': {
+      src: 'lib/jquery.easing.js',
+      deps: ['jquery']
     }
   }
-
 })
 
 seajs.use('init')

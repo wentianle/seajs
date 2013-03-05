@@ -1,9 +1,7 @@
 define([
-  'auto-transport',
   'combo-map',
-  'executing-module',
-  'modify',
   'module-constructor',
+  'non-cmd',
   'plugin-combo',
   'plugin-nocache',
   'plugin-shim',

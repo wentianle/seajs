@@ -150,7 +150,7 @@ IE 5.5+           ✔
 <pre class="text">
 examples/
   |-- assets
-  |     |-- common    存放 jquery.js 等通用类库
+  |     |-- lib       存放 jquery.js 等通用类库
   |     |-- hello     存放项目的 js、css 等文件
   |     `-- seajs     存放 sea.js 及其插件
   `-- hello.html      项目的 html 文件
@@ -183,11 +183,6 @@ examples/
 
 <pre>
 seajs.config({
-  // 配置别名
-  alias: {
-    'jquery': 'common/jquery-1.9.1.min.js'
-  },
-
   // 加载 shim 插件
   plugins: ['shim'],
 
@@ -289,7 +284,8 @@ define(function(require, exports, module) {
         <li><a href="https://github.com/seajs/seajs/issues/259" target="_blank">require 书写约定</a></li>
         <li><a href="https://github.com/seajs/seajs/issues/260" target="_blank">模块的加载启动</a></li>
         <li><a href="https://github.com/seajs/seajs/issues/262" target="_blank">配置</a></li>
-        <li><a href="https://github.com/seajs/seajs/issues/265" target="_blank">常用插件</a></li>
+        <li><a href="https://github.com/seajs/seajs/issues/265" target="_blank">文本插件</a></li>
+        <li><a href="https://github.com/seajs/seajs/issues/579" target="_blank">shim 插件</a></li>
         <li><a href="https://github.com/seajs/seajs/issues/538" target="_blank">构建工具</a></li>
         <li><a href="https://github.com/seajs/seajs/issues/267" target="_blank">常见错误信息</a></li>
       </ul>
@@ -489,7 +485,10 @@ Makefile  -- 可执行构建、测试等命令</pre>
   <a href="https://github.com/seajs/seajs" target="_blank"><img style="position: absolute; top: -7px; right: 0; border: 0" src="https://i.alipayobjects.com/e/201211/1dbSqT9ykm.png" width="149" height="149" alt="Fork me on GitHub"></a>
 </div>
 
-<script src="../dist/sea.js" data-main="./assets/main"></script>
+<script src="../dist/sea.js"
+        data-config="./assets/config.js?t=20130305"
+        data-main="./assets/main.js?t=20130305"></script>
+
 <script>
   var _gaq = _gaq || []
   _gaq.push(['_setAccount', 'UA-53409-11'])

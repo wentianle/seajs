@@ -5,71 +5,42 @@
  */
 (function(seajs, global) {
 
-  // seajs.config( {
+  // seajs.config({
   // shim: {
   //   "jquery": {
+  //     src: "lib/jquery.js",
   //     exports: "jQuery" or function
   //   },
-  //   "jquery.plugins": {
-  //     // URI matches such as jquery.easing.js, jquery.keystop.js
-  //     match: /jquery\.[a-z].*\.js/,
+  //   "jquery.easing": {
+  //     src: "lib/jquery.easing.js",
   //     deps: ["jquery"]
   //   }
   // })
-  var configData = seajs.config.data
 
+  seajs.on("config", onConfig)
+  onConfig(seajs.config.data)
 
-  seajs.on("initialized", function(mod) {
-    var uri = mod.uri
+  function onConfig(data) {
+    if (!data) return
+    var shim = data.shim
 
-    each(configData.shim, function(item) {
-      var deps = item.deps
+    for (var id in shim) {
+      (function(item) {
 
-      if (deps && match(item, uri)) {
-        for (var i = 0; i < deps.length; i++) {
-          mod.dependencies.push(deps[i])
-        }
-        return false
-      }
+        // Set dependencies
+        item.deps && define(item.src, item.deps)
 
-    })
-  })
+        // Define the proxy cmd module
+        define(id, [item.src], function() {
+          var exports = item.exports
+          return typeof exports === "function" ? exports() :
+              typeof exports === "string" ? global[exports] :
+                  exports
+        })
 
-  seajs.on("execute", function(mod) {
-    var uri = mod.uri
-
-    each(configData.shim, function(item, key) {
-      var exports = item.exports
-
-      if (exports && match(item, uri, key)) {
-        mod.exports = isFunction(exports) ? exports() : global[exports]
-        return false
-      }
-
-    })
-  })
-
-
-  // Helpers
-
-  function each(obj, fn) {
-    for (var p in obj) {
-      if (obj.hasOwnProperty(p)) {
-        if (fn(obj[p], p, obj) === false) {
-          break
-        }
-      }
+      })(shim[id])
     }
   }
 
-  function match(item, uri, key) {
-    var match = item.match || (item.match = seajs.resolve(key))
-    return match.test ? match.test(uri) : uri === match
-  }
-
-  function isFunction(obj) {
-    return typeof obj === "function"
-  }
-
-})(seajs, this);
+})(seajs, typeof global === "undefined" ? this : global);
 
